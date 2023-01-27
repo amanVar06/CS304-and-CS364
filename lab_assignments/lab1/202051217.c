@@ -52,6 +52,8 @@ void generateKeyTable(char * key, int keysize, char keyT[5][5])
 			}
 		}
 	}
+
+	free(dictionary);
 }
 
 char * prepareStringForEncryption(char * msg, int len) {
@@ -147,6 +149,42 @@ void decryptByPlayfair(char * str, char keyT[5][5], int len)
 	}
 }
 
+// C function for extended Euclidean Algorithm
+int gcdExtended(int a, int b, int* x, int* y)
+{
+	// Base Case
+	if (a == 0) {
+		*x = 0, *y = 1;
+		return b;
+	}
+
+	int x1, y1; // To store results of recursive call
+	int gcd = gcdExtended(b % a, a, &x1, &y1);
+
+	// Update x and y using results of recursive
+	// call
+	*x = y1 - (b / a) * x1;
+	*y = x1;
+
+	return gcd;
+}
+
+// Function to find modulo inverse of a
+int modInverse(int A, int M)
+{
+	int x, y, res = 1;
+	int g = gcdExtended(A, M, &x, &y);
+	if (g != 1){
+		printf("Inverse doesn't exist");
+	}
+	else {
+		// m is added to handle negative x
+		res = (x % M + M) % M;
+		printf("\nModular multiplicative inverse of %d is %d\n", A, res);
+	}
+
+	return res;
+}
 
 void encryptByAffine(char * msg)
 {
@@ -177,15 +215,10 @@ void decryptCipherByAffine(char * cipher)
 	// strcpy(msg, "");
 	int length = strlen(cipher);
 
-    int a_inv = 0;   
+    int a_inv = modInverse(a, m);  
 
 	//D ( x ) = a^-1 ( c - b ) mod m
 	//1 = a a^-1 mod m 
-
-    for (int i = 0; i < m; i++){       
-        if ((a * i) % m == 1) a_inv = i;
-    }
-
     for (int i = 0; i < length; i++)
     {
 		int c = (int) cipher[i] + 'A'; //cipher text
