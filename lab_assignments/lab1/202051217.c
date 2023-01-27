@@ -3,6 +3,7 @@
 #include <string.h>
 
 #define SIZE 30
+
 const int a = 11; //FOR AFFINE
 const int b = 15; //FOR AFFINE
 const int m = 26;
@@ -188,10 +189,7 @@ int modInverse(int A, int M)
 
 void encryptByAffine(char * msg)
 {
-    // char * cipher = malloc(SIZE);
-	// strcpy(cipher, "");
-	int length = strlen(msg); //ignoring null character
-
+	int length = strlen(msg);
 	// E ( x ) = ( a x + b ) mod m 
 
     for (int i = 0; i < length; i++)
@@ -200,36 +198,27 @@ void encryptByAffine(char * msg)
 		int c = (a * x + b) % m; //cipher text
 		char ch = (char) (c + 'A');
 
-        msg[i] = ch;
-
-        // strncat(cipher, &ch, 1);
-          
+        msg[i] = ch;          
     }
 
-    // return cipher;
 }
 
 void decryptCipherByAffine(char * cipher)
 {
-	// char * msg = malloc(SIZE);
-	// strcpy(msg, "");
 	int length = strlen(cipher);
 
-    int a_inv = modInverse(a, m);  
-
+    int a_inv = modInverse(a, m); 
 	//D ( x ) = a^-1 ( c - b ) mod m
 	//1 = a a^-1 mod m 
+
     for (int i = 0; i < length; i++)
     {
-		int c = (int) cipher[i] + 'A'; //cipher text
-		int x = (a_inv * (c - b)) % m; //plain text
+		int c = (int) cipher[i] - 'A'; //cipher text
+		int x = (a_inv * (c - b + m)) % m; //plain text
 		char ch = (char) x + 'A';
-
-        // strncat(msg, &ch, 1); 
+ 
         cipher[i] = ch;                      
     }
- 
-    // return msg;
 }
 
 
@@ -247,7 +236,6 @@ void encryptByShift(char * msg)
         msg[i] = ch;
            
     }
-
 }
 
 void decryptCipherByShift(char * cipher)
@@ -256,7 +244,7 @@ void decryptCipherByShift(char * cipher)
 
     for (int i = 0; i < length; i++)
     {
-		int c = (int) cipher[i] + 'A';
+		int c = (int) cipher[i] - 'A';
 		int x = ((c - k3) + m) % m; 
 		char ch = (char) x + 'A';
 
@@ -264,7 +252,6 @@ void decryptCipherByShift(char * cipher)
         
     }
 }
-
 
 int main()
 {

@@ -199,7 +199,7 @@ char * encryptByAffine(char msg[])
 {
     char * cipher = malloc(SIZE);
 	strcpy(cipher, "");
-	int length = strlen(msg); //ignoring null character
+	int length = strlen(msg);
 
 	// E ( x ) = ( a x + b ) mod m 
 
