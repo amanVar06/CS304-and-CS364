@@ -150,7 +150,7 @@ void decryptByPlayfair(char * str, char keyT[5][5], int len)
 	}
 }
 
-// C function for extended Euclidean Algorithm
+// Extended Euclidean Algorithm
 int gcdExtended(int a, int b, int* x, int* y)
 {
 	// Base Case
@@ -181,7 +181,7 @@ int modInverse(int A, int M)
 	else {
 		// m is added to handle negative x
 		res = (x % M + M) % M;
-		printf("\nModular multiplicative inverse of %d is %d\n", A, res);
+		// printf("\nModular multiplicative inverse of %d is %d\n", A, res);
 	}
 
 	return res;
@@ -297,13 +297,13 @@ int main()
 
     //decryption
     decryptCipherByShift(str);
-    printf("\nDecrypt Cipher C3: %s\n", str);
+    printf("\nDecryption by Shift: %s\n", str);
 
     decryptCipherByAffine(str);
-    printf("\nDecrypt Cipher C2: %s\n", str);
+    printf("\nDecryption by Affine: %s\n", str);
 
     decryptByPlayfair(str, keyTable, len);
-    printf("\nPlain text (After Final Decryption of C1): %s\n\n", str);
+    printf("\nDelta (After Final Decryption by Playfair): %s\n\n", str);
 
 	return 0;
 }
